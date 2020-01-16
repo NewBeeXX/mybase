@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<FileVersion major="1" minor="0" />
+	<ActiveTarget name="Debug" />
+	<File name="pf_hashtable.h" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="728" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="pf_buffermgr.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="703" topLine="68" />
+		</Cursor>
+	</File>
+	<File name="pf_internal.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="119" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="158" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="pf_statistics.cpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="354" topLine="9" />
+		</Cursor>
+	</File>
+	<File name="pf.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3217" topLine="126" />
+		</Cursor>
+	</File>
+	<File name="pf_manager.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="207" topLine="103" />
+		</Cursor>
+	</File>
+	<File name="pf_hashtable.cpp" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1486" topLine="40" />
+		</Cursor>
+	</File>
+	<File name="pf_filehandle.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4559" topLine="164" />
+		</Cursor>
+	</File>
+	<File name="pf_test1.cpp" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5677" topLine="145" />
+		</Cursor>
+	</File>
+	<File name="pf_error.cpp" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1096" topLine="30" />
+		</Cursor>
+	</File>
+	<File name="pf_pagehandle.cpp" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="976" topLine="27" />
+		</Cursor>
+	</File>
+	<File name="mybase.h" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1599" topLine="78" />
+		</Cursor>
+	</File>
+	<File name="pf_buffermgr.cpp" open="1" top="1" tabpos="6" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="17114" topLine="589" />
+		</Cursor>
+	</File>
+</CodeBlocks_layout_file>
