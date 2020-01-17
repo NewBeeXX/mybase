@@ -151,7 +151,9 @@ RC PF_FileHandle::DisposePage(PageNum pageNum){
     if(rc=pBufferMgr->GetPage(unixfd,pageNum,&pPageBuf,FALSE))return rc;
 
     if( ((PF_PageHdr*)pPageBuf)->nextFree!=PF_PAGE_USED ){
-        if(rc=UnpinPage(pageNum))return rc;
+        if(rc=UnpinPage(pageNum)){
+            return rc;
+        }
         return PF_PAGEFREE;
     }
 
@@ -161,8 +163,12 @@ RC PF_FileHandle::DisposePage(PageNum pageNum){
     hdr.firstFree=pageNum;
     bHdrChanged=TRUE;
 
-    if(rc=MarkDirty(pageNum))return rc;
-    if(rc=UnpinPage(pageNum))return rc;
+    if(rc=MarkDirty(pageNum)){
+        return rc;
+    }
+    if(rc=UnpinPage(pageNum)){
+        return rc;
+    }
 
     return 0;
 }

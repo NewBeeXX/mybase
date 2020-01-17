@@ -21,6 +21,7 @@ PF_HashTable::~PF_HashTable() {
             entry=next;
         }
     }
+    delete [] hashTable;
 }
 
 
@@ -31,7 +32,7 @@ RC PF_HashTable::Find(int fd,PageNum pageNum,int &slot) {
             entry;
             entry=entry->next
        ) {
-        if(entry->fd==fd&&entry->pageNum) {
+        if(entry->fd==fd&&entry->pageNum==pageNum) {
             slot=entry->slot;
             return 0;
         }
@@ -42,7 +43,7 @@ RC PF_HashTable::Find(int fd,PageNum pageNum,int &slot) {
 RC PF_HashTable::Insert(int fd,PageNum pageNum,int slot) {
     int bucket=Hash(fd,pageNum);
     PF_HashEntry *entry;
-    for(entry=hashTable[slot];
+    for(entry=hashTable[bucket];
             entry;
             entry=entry->next
        ) {

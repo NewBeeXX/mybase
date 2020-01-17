@@ -222,13 +222,23 @@ RC TestPF(){
         return rc;
 
 
+    cout << "Disposing of alternate pages\n";
+
     for(int i=0;i<PF_BUFFER_SIZE;i++){
         if(i&1){
-            if(rc=fh1.DisposePage(i))return rc;
+            if(rc=fh1.DisposePage(i)){
+                puts("gg1");
+                return rc;
+            }
         }else{
-            if(rc=fh2.DisposePage(i))return rc;
+            if(rc=fh2.DisposePage(i)){
+                puts("gg2");
+                return rc;
+            }
         }
     }
+
+
 
     cout<<"关闭并删除两个文件"<<endl;
 

@@ -466,7 +466,7 @@ RC PF_BufferMgr::LinkHead(int slot){
     if(first!=INVALID_SLOT)bufTable[first].prev=slot;
     first=slot;
     ///原本是空链的话，将该slot设为last
-    if(last=INVALID_SLOT)last=first;
+    if(last==INVALID_SLOT)last=first;
     return 0;
 }
 
@@ -556,13 +556,15 @@ RC PF_BufferMgr::WritePage(int fd,PageNum pageNum,char *source){
    pStatisticsMgr->Register(PF_WRITEPAGE, STAT_ADDONE);
 #endif
 
-    long offset=pageNum*(long)pageSize*pageNum+PF_FILE_HDR_SIZE;
+    long offset=pageNum*(long)pageSize+PF_FILE_HDR_SIZE;
     if(lseek(fd,offset,L_SET)<0)return PF_UNIX;
     int numBytes=write(fd,source,pageSize);
     if(numBytes<0)return PF_UNIX;
     else if(numBytes!=pageSize)return PF_INCOMPLETEWRITE;
     else return 0;
 }
+
+
 
 RC PF_BufferMgr::InitPageDesc(int fd,PageNum pageNum,int slot){
     bufTable[slot].fd=fd;
@@ -606,6 +608,21 @@ RC PF_BufferMgr::AllocateBlock(char *&buffer){
 RC PF_BufferMgr::DisposeBlock(char* buffer){
     return UnpinPage(MEMORY_FD,*((int*)buffer));
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
