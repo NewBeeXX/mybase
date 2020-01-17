@@ -33,7 +33,7 @@
 1579192782 /home/qyw/mybase/mybase/pf_hashtable.h
 	"pf_internal.h"
 
-1579235307 source:/home/qyw/mybase/mybase/pf_buffermgr.cpp
+1579256244 source:/home/qyw/mybase/mybase/pf_buffermgr.cpp
 	<cstdio>
 	<unistd.h>
 	<iostream>
@@ -69,7 +69,11 @@
 	"pf.h"
 	"statistics.h"
 
-1579233021 source:/home/qyw/mybase/mybase/pf_test1.cpp
+1579255585 source:/home/qyw/mybase/mybase/pf_test1.cpp
+
+1579255598 source:/home/qyw/mybase/mybase/pf_test2.cpp
+
+1579255597 source:/home/qyw/mybase/mybase/pf_test3.cpp
 	<cstdio>
 	<iostream>
 	<cstring>
@@ -77,5 +81,4 @@
 	"pf.h"
 	"pf_internal.h"
 	"pf_hashtable.h"
-	"statistics.h"
 
