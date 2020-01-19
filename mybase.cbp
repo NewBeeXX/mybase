@@ -32,6 +32,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="bitmap.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="mybase.h" />
 		<Unit filename="pf.h" />
@@ -46,6 +47,19 @@
 		<Unit filename="pf_pagehandle.cpp" />
 		<Unit filename="pf_statistics.cpp" />
 		<Unit filename="pf_test1.cpp" />
+		<Unit filename="pf_test2.cpp" />
+		<Unit filename="pf_test3.cpp" />
+		<Unit filename="predicate.cpp" />
+		<Unit filename="predicate.h" />
+		<Unit filename="rm.h" />
+		<Unit filename="rm_error.cpp" />
+		<Unit filename="rm_error.h" />
+		<Unit filename="rm_filehandle.cpp" />
+		<Unit filename="rm_filescan.cpp" />
+		<Unit filename="rm_manager.cpp" />
+		<Unit filename="rm_record.cpp" />
+		<Unit filename="rm_rid.h" />
+		<Unit filename="rm_test.cpp" />
 		<Unit filename="statistics.h" />
 		<Extensions>
 			<code_completion />

@@ -3,8 +3,8 @@
 
 
 #include "mybase.h"
-#include "rm.error.h"
-#include "rm.rid.h"
+#include "rm_error.h"
+#include "rm_rid.h"
 #include "pf.h"
 #include "predicate.h"
 
@@ -15,7 +15,7 @@
 struct RM_FileHdr {
     int firstFree;///文件中因为删除而空出来的分页
     int numPages;///分页数
-    int extRecordSize;///记录的总size
+    int extRecordSize;///一条记录的size 字节数
 };
 
 ///用位图来标记一个分页中的哪些slot有可用的空间
@@ -123,7 +123,7 @@ public :
     RC Open(PF_FileHandle*,int recordSize);
     RC SetHdr(RM_FileHdr h){hdr=h;return 0;}
 
-    RC GetRec(const RID& rid,RM_Record& rec);
+    RC GetRec(const RID& rid,RM_Record& rec)const;
     RC InsertRec(const char* pData,RID &rid);
     RC DeleteRec(const RID& rid);
     RC UpdataRec(const RM_Record& rec);
@@ -133,9 +133,9 @@ public :
 
     RC GetPF_FileHandle(PF_FileHandle&) const;
 
-    bool hdrChanged()const{return hdrChanged;}
-    int fullRecordSize()const{reurn hdr.extRecordSize;}
-    int GetNumPages()const{reutrn hdr.numPages;}
+    bool hdrChanged()const{return bHdrChanged;}
+    int fullRecordSize()const{return hdr.extRecordSize;}
+    int GetNumPages()const{return hdr.numPages;}
     int GetNumSlots()const;
 
     RC IsValid()const;
@@ -172,13 +172,13 @@ public:
                 AttrType attrType,
                 int attrLength,
                 int attrOffset,
-                CompOp,
+                CompOp compOp,
                 void *value,
                 ClientHint pinHint=NO_HINT
                 );
     RC GetNextRec(RM_Record& rec);
     RC CloseScan();
-    bool IsOpen()const{return bOpen&&prmh!=NULL&&pred!=NULL};
+    bool IsOpen()const{return bOpen&&prmh!=NULL&&pred!=NULL;}
     void resetState(){current=RID(1,-1);}
     RC GotoPage(PageNum p);
 

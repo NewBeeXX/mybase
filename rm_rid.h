@@ -20,7 +20,7 @@ public:
     static const PageNum NULL_PAGE=-1;
     static const SlotNum NULL_SLOT=-1;
     RID():page(NULL_PAGE),slot(NULL_SLOT){}
-    RID(PageNum pageNum,SlotNum,slotNum):page(pageNum),slot(slotNum){}
+    RID(PageNum pageNum,SlotNum slotNum):page(pageNum),slot(slotNum){}
 
     ~RID(){}
     RC GetPageNum(PageNum &pageNum)const{
