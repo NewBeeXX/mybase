@@ -33,6 +33,12 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="bitmap.cpp" />
+		<Unit filename="btree_node.h" />
+		<Unit filename="ix.h" />
+		<Unit filename="ix_error.h" />
+		<Unit filename="ix_indexhandle.h" />
+		<Unit filename="ix_indexscan.h" />
+		<Unit filename="ix_manager.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="mybase.h" />
 		<Unit filename="pf.h" />
