@@ -42,7 +42,7 @@ public:
     int FindKey(const void* &key,const RID& r=RID(-1,-1))const;
 
     RID FindAddr(const void* &key)const;
-    RID GetAddr(const int pos);
+    RID GetAddr(const int pos)const;
 
     int FindKeyPosition(const void* &key)const;
     RID FindAddrAtPosition(const void*& key)const;

@@ -6,6 +6,7 @@
 #include"pf.h"
 #include"ix_error.h"
 #include"btree_node.h"
+#include<cassert>
 
 struct IX_FileHdr{
     int numPages;///一个文件多少页
@@ -56,14 +57,14 @@ public:
     BtreeNode* FindLeafForceRight(const void * pData);
     BtreeNode* FetchNode(RID r)const;
     BtreeNode* FetchNode(PageNum p)const;
-    void Reset(BtreeNode*& old,PageNum p)const;
-    void Reset(BtreeNode*& old,RID r)const;
+    void ResetNode(BtreeNode*& old,PageNum p)const;
+    void ResetNode(BtreeNode*& old,RID r)const;
 
     int GetHeight()const;
-    int SetHeight(const int&);
+    void SetHeight(const int&);
 
     BtreeNode* GetRoot()const;
-    void Print(ostream& os,int level=-1,RID r=RID(-1,-1))cons;
+    void Print(ostream& os,int level=-1,RID r=RID(-1,-1))const;
 
     RC Pin(PageNum p);
     RC UnPin(PageNum p);
@@ -75,7 +76,7 @@ private:
     PF_FileHandle* pfHandle;
     bool bHdrChanged;
     BtreeNode* root;
-    BtreeNode** path;
+    BtreeNode** path;///指针数组
     int * pathP;
 
     ///整棵树最大的键
