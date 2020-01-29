@@ -29,7 +29,7 @@ RC IX_Manager::CreateIndex(const char* fileName, int indexNo, AttrType attrType,
         return IX_PF;
     }
     PF_FileHandle pfh;
-    if((rc=pfm.OpenFile(newname.str().c_str()))<0 ){
+    if((rc=pfm.OpenFile(newname.str().c_str(),pfh))<0 ){
         PF_PrintError(rc);
         return IX_PF;
     }
@@ -53,7 +53,7 @@ RC IX_Manager::CreateIndex(const char* fileName, int indexNo, AttrType attrType,
     hdr.height=0;
     hdr.rootPage=-1;
     hdr.attrType=attrType;
-    hdt.attrLength=attrLength;
+    hdr.attrLength=attrLength;
 
     memcpy(pData,&hdr,sizeof(hdr));
     PageNum headerPageNum;
@@ -77,9 +77,10 @@ RC IX_Manager::CreateIndex(const char* fileName, int indexNo, AttrType attrType,
 
 
 RC IX_Manager::DestroyIndex(const char* fileName, int indexNo) {
-    if(indexNo<0||fileName==NULL)return IX_FRECRATEFAIL;
+    if(indexNo<0||fileName==NULL)return IX_FCREATEFAIL;
     stringstream newname;
     newname<<fileName<<"."<<indexNo;
+    RC rc;
     if((rc=pfm.DestroyFile(newname.str().c_str()))<0){
         PF_PrintError(rc);
         return IX_PF;
@@ -98,7 +99,7 @@ RC IX_Manager::OpenIndex(const char* fileName, int indexNo, IX_IndexHandle& ixh)
     newname<<fileName<<"."<<indexNo;
 
     RC rc;
-    if((rc=pfm.OpenFile(newname.str().c_str()))<0){
+    if((rc=pfm.OpenFile(newname.str().c_str(),pfh))<0){
         PF_PrintError(rc);
         return IX_PF;
     }
@@ -108,7 +109,7 @@ RC IX_Manager::OpenIndex(const char* fileName, int indexNo, IX_IndexHandle& ixh)
        (rc=ph.GetData(pData))
        )return rc;
 
-    IX_FileHdr hd;
+    IX_FileHdr hdr;
     memcpy(&hdr,pData,sizeof(hdr));
     if((rc=ixh.Open(&pfh,hdr.pairSize,hdr.rootPage,hdr.pageSize))<0){
         IX_PrintError(rc);
@@ -128,7 +129,7 @@ RC IX_Manager::CloseIndex(IX_IndexHandle& ixh) {
     if(ixh.HdrChanged()){
         PF_PageHandle ph;
         RC rc;
-        if((ixh.pfHandle->GetThisPage(0,ph))<0){
+        if((rc=ixh.pfHandle->GetThisPage(0,ph))<0){
             PF_PrintError(rc);return rc;
         }
         if((rc=ixh.SetFileHeader(ph))<0){

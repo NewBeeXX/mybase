@@ -44,6 +44,7 @@
 		<Unit filename="ix_indexscan.h" />
 		<Unit filename="ix_manager.cpp" />
 		<Unit filename="ix_manager.h" />
+		<Unit filename="ix_test.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="mybase.h" />
 		<Unit filename="pf.h" />

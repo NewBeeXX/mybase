@@ -2,7 +2,7 @@
 #include<cstdio>
 #include<iostream>
 #include "rm_error.h"
-//#include "ix_error.h"
+#include "ix_error.h"
 //#include "sm_error.h"
 //#include "ql_error.h"
 #include "pf.h"
@@ -65,29 +65,29 @@ void RM_PrintError(RC rc) {
 //
 
 
-
-//void PrintErrorAll(RC rc) {
-//    // Check the return code is within proper limits
-//    if ((rc >= START_RM_WARN && rc <= RM_LASTWARN)
-//            || (-rc >= -START_RM_ERR && -rc <= -RM_LASTERROR))
-//        RM_PrintError(rc);
-//    else if ((rc >= START_PF_WARN && rc <= PF_LASTWARN)
-//             || (-rc >= -START_PF_ERR && -rc <= -PF_LASTERROR))
-//        PF_PrintError(rc);
-//    else if ((rc >= START_IX_WARN && rc <= IX_LASTWARN)
-//             || (-rc >= -START_IX_ERR && -rc <= -IX_LASTERROR))
-//        IX_PrintError(rc);
+///暂时还有一些层未实现 先注释掉
+void PrintErrorAll(RC rc) {
+    // Check the return code is within proper limits
+    if ((rc >= START_RM_WARN && rc <= RM_LASTWARN)
+            || (-rc >= -START_RM_ERR && -rc <= -RM_LASTERROR))
+        RM_PrintError(rc);
+    else if ((rc >= START_PF_WARN && rc <= PF_LASTWARN)
+             || (-rc >= -START_PF_ERR && -rc <= -PF_LASTERROR))
+        PF_PrintError(rc);
+    else if ((rc >= START_IX_WARN && rc <= IX_LASTWARN)
+             || (-rc >= -START_IX_ERR && -rc <= -IX_LASTERROR))
+        IX_PrintError(rc);
 //    else if ((rc >= START_SM_WARN && rc <= SM_LASTWARN)
 //             || (-rc >= -START_SM_ERR && -rc <= -SM_LASTERROR))
 //        SM_PrintError(rc);
 //    else if ((rc >= START_QL_WARN && rc <= QL_LASTWARN)
 //             || (-rc >= -START_QL_ERR && -rc <= -QL_LASTERROR))
 //        QL_PrintError(rc);
-//    else if (rc == 0)
-//        cerr << "PrintError called with return code of 0\n";
-//    else {
-//        // Print error
-//        cerr << "rc was " << rc << endl;
-//        cerr << "Out of bounds for RM, IX, SM, QL and PF err/warn" << endl;
-//    }
-//}
+    else if (rc == 0)
+        cerr << "PrintError called with return code of 0\n";
+    else {
+        // Print error
+        cerr << "rc was " << rc << endl;
+        cerr << "Out of bounds for RM, IX, SM, QL and PF err/warn" << endl;
+    }
+}
