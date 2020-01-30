@@ -8,6 +8,7 @@ BtreeNode::BtreeNode(AttrType attrType,int attrLength,
                      int pageSize
                     )
     :keys(NULL),rids(NULL),attrLength(attrLength),attrType(attrType) {
+
     order=floor( (pageSize+sizeof(numKeys)+2*sizeof(PageNum)) /
                  (sizeof(RID)+attrLength)
                );
@@ -82,7 +83,7 @@ int BtreeNode::Destroy() {
 ///看到这里应该就知道 numkey存在指针后面
 int BtreeNode::GetNumKeys() {
     void* loc=(char*)rids + sizeof(RID) * order;
-    return *(int*)loc;
+    return numKeys=*(int*)loc;
 }
 
 int BtreeNode::SetNumKeys(int newNumKeys) {

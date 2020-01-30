@@ -142,16 +142,17 @@
 	"rm.h"
 	"rm_rid.h"
 
-1579434766 source:/home/qyw/mybase/mybase/rm_error.cpp
+1580289369 source:/home/qyw/mybase/mybase/rm_error.cpp
 	<cerrno>
 	<cstdio>
 	<iostream>
 	"rm_error.h"
+	"ix_error.h"
 	"pf.h"
 
 1579538333 source:/home/qyw/mybase/mybase/rm_test.cpp
 
-1579594030 source:/home/qyw/mybase/mybase/btree_node.cpp
+1580385394 source:/home/qyw/mybase/mybase/btree_node.cpp
 	"btree_node.h"
 	"pf.h"
 	<cstdlib>
@@ -208,7 +209,7 @@
 	"ix_indexhandle.h"
 	"rm_error.h"
 
-1580289061 source:/home/qyw/mybase/mybase/ix_indexscan.cpp
+1580366499 source:/home/qyw/mybase/mybase/ix_indexscan.cpp
 	"ix_indexscan.h"
 	<cerrno>
 	<cstdio>
@@ -219,4 +220,8 @@
 	"ix_manager.h"
 	"ix_indexhandle.h"
 	<sstream>
+
+1580366313 source:/home/qyw/mybase/mybase/ix_test.cpp
+
+1580385422 source:/home/qyw/mybase/mybase/good_ix_test.cpp
 

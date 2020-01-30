@@ -35,6 +35,9 @@
 		<Unit filename="bitmap.cpp" />
 		<Unit filename="btree_node.cpp" />
 		<Unit filename="btree_node.h" />
+		<Unit filename="catalog.h" />
+		<Unit filename="dbcreate.cpp" />
+		<Unit filename="good_ix_test.cpp" />
 		<Unit filename="ix.h" />
 		<Unit filename="ix_error.cpp" />
 		<Unit filename="ix_error.h" />
@@ -63,6 +66,7 @@
 		<Unit filename="pf_test3.cpp" />
 		<Unit filename="predicate.cpp" />
 		<Unit filename="predicate.h" />
+		<Unit filename="printer.h" />
 		<Unit filename="rm.h" />
 		<Unit filename="rm_error.cpp" />
 		<Unit filename="rm_error.h" />

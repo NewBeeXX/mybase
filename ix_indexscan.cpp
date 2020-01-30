@@ -21,7 +21,7 @@ IX_IndexScan::IX_IndexScan():bOpen(false),desc(false),eof(false),lastNode(NULL) 
 
 IX_IndexScan::~IX_IndexScan() {
     if(pred!=NULL)delete pred;
-    if(pixh&&pixh->GetHeight()>1) {
+    if(pixh!=NULL&&pixh->GetHeight()>1) {
         if(currNode!=NULL)delete currNode;
         if(lastNode!=NULL)delete lastNode;
     }
