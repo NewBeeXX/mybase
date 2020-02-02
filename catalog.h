@@ -1,6 +1,7 @@
 #ifndef CATALOG_H
 #define CATALOG_H
 
+///这个文件定义了一个保存关系的信息 的数据结构 DataRelInfo
 
 #include"printer.h"
 #include"parser.h"
@@ -14,6 +15,7 @@
 //     int      attrLength;            // Length of attribute
 //     int      indexNo;               // Index number of attribute
 // }
+
 
 
 struct DataRelInfo{
@@ -53,14 +55,6 @@ struct DataRelInfo{
     int numRecords;///元组数
     char relName[MAXNAME+1];
 };
-
-
-
-
-
-
-
-
 
 
 #endif // CATALOG_H

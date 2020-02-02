@@ -221,7 +221,16 @@
 	"ix_indexhandle.h"
 	<sstream>
 
-1580366313 source:/home/qyw/mybase/mybase/ix_test.cpp
+1580385574 source:/home/qyw/mybase/mybase/ix_test.cpp
+	<cstdio>
+	<iostream>
+	<cstring>
+	<cstdlib>
+	<ctime>
+	"mybase.h"
+	"pf.h"
+	"rm.h"
+	"ix.h"
 
 1580385422 source:/home/qyw/mybase/mybase/good_ix_test.cpp
 

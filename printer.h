@@ -6,7 +6,7 @@
 #include"mybase.h"
 #include"catalog.h"
 #include"data_attr_info.h"
-#include"iterator".h
+#include"iterator.h"
 
 #define MAXPRINTSTRING (2*MAXNAME+5)
 
