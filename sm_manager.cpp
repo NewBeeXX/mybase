@@ -435,77 +435,402 @@ RC SM_Manager::LoadRecord(const char* relName, int buflen, const char buf[]) {
 }
 
 RC SM_Manager::Load(const char* relName, const char* fileName) {
+    RC invalid=IsValid();if(invalid)return invalid;
+    if(relName==NULL||fileName==NULL)return SM_BADTABLE;
+    ifstream ifs(fileName);
+    if(ifs.fail())return SM_BADTABLE;
+    RM_FileHandle rfh;
+    RC rc;
+    if(rc=rmm.OpenFile(relName,rfh))return rc;
+    int attrCount=-1;
+    DataAttrInfo* attributes;
+    if(rc=GetFromTable(relName,attrCount,attributes))return rc;
+    IX_IndexHandle *indexes=new IX_IndexHandle[attrCount];
+    int size=0;
+    for(int i=0;i<attrCount;i++){
+        size+=attributes[i].attrLength;
+        if(attributes[i].indexNo!=-1){
+            ixm.OpenIndex(relName,attributes[i].indexNo,indexes[i]);
+        }
+    }
 
 
 
+    char* buf=new char[size];
+    int numLines=0;
+    ///下面这个循环 从filename这个文件中读取每一行 把每一行看成一个要插入的元组
+    ///先构造出一块内存 这块内存保存的就是这个元组的数据 然后插入rm
+    while(!ifs.eof()){
+        memset(buf,0,size);
+        string line;
+        getline(ifs,line);
+        if(line.length()==0)continue;
+        numLines++;
+        string token;
+        istringstream iss(line);
+        int i=0;
+        ///getline函数默认分割符为'\n' 所以你可以get到一行 这里改成用,分割
+        while(getline(iss,token,',')){
+            istringstream ss(token);
+            if(attributes[i].attrType==INT){
+                int val;
+                ss>>val;
+                memcpy(buf+attributes[i].offset,&val,attributes[i].attrLength);
+            }
+            if(attributes[i].attrType==FLOAT){
+                float val;
+                ss>>val;
+                memcpy(buf+attributes[i].offset,&val,attributes[i].attrLength);
+            }
+            if(attributes[i].attrType==STRING){
+                string& val=token;
+                if(val.length()>attributes[i].attrLength){
+                    cerr << "SM_Manager::Load truncating to "
+                        << attributes[i].attrLength << " - " << val << endl;
+                    ///截断了
+                    memcpy(buf+attributes[i].offset,val.c_str(),attributes[i].attrLength);
+                }else{
+                    memcpy(buf+attributes[i].offset,val.c_str(),val.length());
+                }
+            }
+
+            ++i;
+        }
+        RID rid;
+        if((rc=rfh.InsertRec(buf,rid))<0)return rc;
+        for(int i=0;i<attrCount;i++){
+            if(attributes[i].indexNo!=-1){
+                rc=indexes[i].InsertEntry(buf+attributes[i].offset,rid);
+                if(rc!=0)return rc;
+            }
+        }
+    }
+
+
+    DataRelInfo r;
+    RID rid;
+    if(rc=GetRelFromCat(relName,r,rid))return rc;
+
+    r.numRecords+=numLines;
+    r.numPages=rfh.GetNumPages();
+    RM_Record rec;
+    rec.Set((char*)&r,DataRelInfo::size(),rid);
+    if(rc=relfh.UpdataRec(rec))return rc;
+    if(rc=rmm.CloseFile(rfh))return rc;
+    for(int i=0;i<attrCount;i++)if(attributes[i].indexNo!=-1){
+        if(rc=ixm.CloseIndex(indexes[i]))return rc;
+    }
+    delete [] buf;
+    delete [] attributes;
+    delete [] indexes;
+    ifs.close();
+    return 0;
 }
 
 
-bool SM_Manager::IsAttrIndexed(const char* relname, const char* attrName) {
+RC SM_Manager::Print(const char* relName) {
+    RC invalid=IsValid();if(invalid)return invalid;
+    DataAttrInfo* attributes;
+    RM_FileHandle rfh;
+    RM_FileHandle *prfh;
+    int attrCount;
+    RM_Record rec;
+    char* data;
+    RC rc;
+    if(strcmp(relName,"relcat")==0)prfh=&relfh;
+    else if(strcmp(relName,"attrcat")==0)prfh=&attrfh;
+    else{
+        if(rc=rmm.OpenFile(relName,rfh))return rc;
+        prfh=&rfh;
+    }
+    if(rc=GetFromTable(relName,attrCount,attributes))retunr rc;
 
-}
+    Printer p(attributes,attrCount);
+    p.PrintHeader(cout);
 
+    RM_FileScan rfs;
+    ///进行一个全表扫描 不用条件
+    if(rc=rfs.OpenScan(*prfh,INT,sizeof(int),0,NO_OP,NULL))return rc;
 
+    while(rc!=RM_EOF){
+        rc=rfs.GetNextRec(rec);
+        if(rc!=RM_EOF&&rc!=0)return rc;
+        if(rc!=RM_EOF){
+            rec.GetData(data);
+            p.Print(cout,data);
+        }
+    }
 
-RC SM_Manager::FindRelForAttr(RelAttr& ra, int nRelations, const char* const possibleRelations[]) {
-
-}
-
-RC SM_Manager::SemCheck(const Condition& cond) {
-
-}
-
-RC SM_Manager::SemCheck(const AggRelAttr& ra) {
-
-}
-
-RC SM_Manager::SemCheck(const RelAttr& ra) {
-
-}
-
-RC SM_Manager::SemCheck(const char* relName) {
-
-}
-
-RC SM_Manager::GetNumRecords(const char* relName) {
-
-}
-
-RC SM_Manager::GetNumPages(const char* relName) {
-
-}
-
-
-
-
-
-RC SM_Manager::GetFromTable(const char* relName, int& attrCount, DataAttrInfo*& attributes) {
-
-}
-
-RC SM_Manager::IsValid() {
-
-}
-
-RC SM_Manager::Get(const string& paramName, string& value) {
-
+    p.PrintFooter(cout);
+    if(rc=rfs.CloseScan())return rc;
+    if(!rfh.IsValid()){
+        if(rc=rmm.CloseFile(rfh))return rc;
+    }
+    delete [] attributes;
+    return 0;
 }
 
 RC SM_Manager::Set(const char* paramName, const char* value) {
-
+    RC invalid=IsValid();if(invalid)return invalid;
+    if(paramName==NULL||value==NULL)return SM_BADPARAM;
+    params[paramName]=string(value);
+    cout<<"Set\n"
+        <<"   paramName=" << paramName << "\n"
+        <<"   value    =" << value << "\n";
+    return 0;
 }
 
-RC SM_Manager::Print(const char* relName) {
 
+RC SM_Manager::Get(const string& paramName, string& value) const{
+    RC invalid=IsValid();if(invalid)return invalid;
+    auto it=params.find(paramName);
+    if(it==params.end())return SM_BADPARAM;
+    val=it->second;
+    return 0;
 }
 
-RC SM_Manager::Help(const char* relName) {
-
-}
-
+///把数据库中已有的表信息(不是表的所有元组)打出来
 RC SM_Manager::Help() {
+    RC invalid=IsValid();if(invalid)return invalid;
+    DataAttrInfo * attributes;
+    DataAttrInfo nameattr[1];
+    int attrCount;
+    RM_Record rec;
+    char* data;
+    RC rc;
 
+    if(rc=GetFromTable("relcat",attrCount,attributes))return rc;
+    for(int i=0;i<attrCount;i++){
+        if(strcmp(attributes[i].attrName,"relName")==0)nameattr[0]=attributes[i];
+    }
+
+    Printer p(nameattr,1);
+    p.PrintHeader(cout);
+    RM_FileScan rfs;
+    if(rc=rfs.OpenScan(relfh,INT,sizeof(int),0,NO_OP,NULL))return rc;
+    while(rc!=RM_EOF){
+        rc=rfs.GetNextRec(rec);
+        if(rc!=0&&rc!=RM_EOF)return rc;
+        if(rc!=RM_EOF){
+            rec.GetData(data);
+            p.Print(cout,data);
+        }
+    }
+    p.PrintFooter(cout);
+    if(rc=rfs.CloseScan())return rc;
+    delete [] attributes;
+
+    return 0;
 }
+
+///暂时看不太明白这个有参数的help
+RC SM_Manager::Help(const char* relName) {
+    RC invalid=IsValid();if(invalid)return invalid;
+    DataAttrInfo * attributes;
+    DataAttrInfo nameattr[DataAttrInfo::members()-1];
+    DataAttrInfo relinfo;
+    int attrCount;
+    RM_Record rec;
+    char* data;
+    RC rc;
+
+    if(rc=GetFromTable("attrcat",attrCount,attributes))return rc;
+    int j=0;
+    for(int i=0;i<attrCount;i++){
+        if(strcmp(attributes[i].attrName,"relName")!=0){
+            nameattr[j]=attributes[i];
+            j++;
+        }else relinfo=attributes[i];
+    }
+
+    Printer p(nameattr,attrCount-1);
+    p.PrintHeader(cout);
+    RM_FileScan rfs;
+    if(rc=rfs.OpenScan(attrfh,STRING,relinfo.attrLength,relinfo.offset,EQ_OP,(void*)relName))return rc;
+    while(rc!=RM_EOF){
+        rc=rfs.GetNextRec(rec);
+        if(rc!=0&&rc!=RM_EOF)return rc;
+        if(rc!=RM_EOF){
+            rec.GetData(data);
+            p.Print(cout,data);
+        }
+    }
+    p.PrintFooter(cout);
+    if(rc=rfs.CloseScan())return rc;
+    delete [] attributes;
+
+    return 0;
+}
+
+RC SM_Manager::IsValid() const{
+    return bDBOpen?0:SM_BADOPEN;
+}
+
+RC SM_Manager::GetFromTable(const char* relName, int& attrCount, DataAttrInfo*& attributes) {
+    RC invalid=IsValid();if(invalid)return invalid;
+    if(relName==NULL)return SM_NOSUCHTABLE;
+    void* value=const_cast<char*>(relName);
+    RM_FileScan rfs;
+    ///先找一下这个关系是否存在
+    if(rc=rfs.OpenScan(relfh,STRING,MAXNAME+1,offsetof(DataRelInfo,relName),EQ_OP,value,NO_HINT))
+        return rc;
+    RM_Record rec;
+    rc=rfs.GetNextRec(rec);
+    if(rc==RM_EOF)return SM_NOSUCHTABLE;
+    DataRelInfo* prel;
+    rec.GetData((char*&)prel);
+    if(rc=rfs.CloseScan())returnr rc;
+    attrCount=pel->attrCount;
+    attributes=new DataAttrInfo[attrCount];
+    RM_FileScan afs;
+    if(rc=afs.OpenScan(attrfh,STRING,MAXNAME+1,offsetof(DataAttrInfo,relName),EQ_OP,value,NO_HINT))
+        return rc;
+    int numRecs=0;
+    while(1){
+        RM_Record rec;
+        rc=afs.GetNextRec(rec);
+        if(rc==RM_EOF||numRecs>attrCount)break;
+        DataAttrInfo* pattr;
+        rec.GetData((char*&)pattr);
+        attributes[numRecs]=*pattr;
+        numRecs++;
+    }
+    if(numRecs!=attrCount)return SM_BADTABLE;
+    if(rc=afs.CloseScan())return rc;
+    return 0;
+}
+
+bool SM_Manager::IsAttrIndexed(const char* relname, const char* attrName) const{
+
+    DataAttrInfo a;
+    RID rid;
+    RC rc=GetAttrFromCat(relname,attrName,a,rid);
+    return a.indexNo!=-1;
+}
+
+///这个只是测试能不能get到这个relName关系，判断存不存在?
+RC SM_Manager::SemCheck(const char* relName) const{
+    RC invalid=IsValid();if(invalid)return invalid;
+    DataRelInfo rel;
+    RID rid;
+    return GetRelFromCat(relName,rel,rid);
+}
+
+RC SM_Manager::SemCheck(const RelAttr& ra) const{
+    RC invalid=IsValid();if(invalid)return invalid;
+    DataAttrInfo a;
+    RID rid;
+    return GetAttrFromCat(ra.relName,ra.attrName,a,rid);
+}
+
+///暂时看不懂
+RC SM_Manager::SemCheck(const AggRelAttr& ra) const{
+    RC invalid=IsValid();if(invalid)return invalid;
+    DataAttrInfo a;
+    RID rid;
+    if(ra.func!=NO_F&&
+       ra.func!=MIN_F&&
+       ra.func!=MAX_F&&
+       ra.func!=COUNT_F
+       )
+        return SM_BADAGGFUN;
+    return GetAttrFromCat(ra.relName,ra.attrName,a,rid);
+}
+
+///这个函数是在一些关系中查找一个属性 如果这个属性只出现在一个关系 就是正常的
+///如果哪个关系都找不到这个属性 或者 出现了 多次 就是不正常的
+RC SM_Manager::FindRelForAttr(RelAttr& ra, int nRelations,
+                              const char* const possibleRelations[])const {
+    RC invalid=IsValid();if(invalid)return invalid;
+    if(ra.relName!=NULL)return 0;
+    DataAttrInfo a;
+    RID rid;
+    bool found=false;
+    for(int i=0;i<nRelations;i++){
+        RC rc=GetAttrFromCat(possibleRelations[i],ra.attrName,a,rid);
+        if(rc==0){
+            if(!found){
+                found=true;
+                ///这个dup会在里面分配一块内存 然后把传入的字符串拷贝过去
+                ///一般跟free函数搭配使用
+                ra.relName=strdup(possibleRelations[i]);
+            }else{
+                free(ra.relName);
+                ra.relName=NULL;
+                return SM_AMBGATTR;
+            }
+        }
+    }
+    if(!found) return SM_NOSUCHENTRY;
+    else return 0;
+}
+
+///检查一下一个条件是否合法
+///比如符号两边的值是否存在 是否是同类型的可比的值
+RC SM_Manager::SemCheck(const Condition& cond) {
+    if(cond.op<NO_OP||cond.op>GE_OP) return SM_BADOP;
+    if(cond.lhsAttr.relName==NULL||cond.lhsAttr.attrName==NULL)
+        return SM_NOSUCHENTRY;
+    if(cond.bRhsIsAttr){
+        if(cond.rhsAttr.relName==NULL||cond.rhsAttr.attrName==NULL)
+            return SM_NOSUCHENTRY;
+        DataAttrInfo a,b;
+        RID rid;
+        RC rc=GetAttrFromCat(cond.lhsAttr.relName,cond.lhsAttr.attrName,a,rid);
+        if(rc)return SM_NOSUCHENTRY;
+        RC rc=GetAttrFromCat(cond.rhsAttr.relName,cond.rhsAttr.attrName,b,rid);
+        if(rc)return SM_NOSUCHENTRY;
+
+        if(b.attrType!=a.attrType)return SM_TYPEMISMATCH;
+    }else{
+        DataAttrInfo a;
+        RID rid;
+        RC rc=GetAttrFromCat(cond.lhsAttr.relName,cond.lhsAttr.attrName,a,rid);
+        if(rc)return SM_NOSUCHENTRY;
+        if(cond.rhsValue.type!=a.attrType)return SM_TYPEMISMATCH;
+    }
+    return 0;
+}
+
+
+
+
+
+
+
+RC SM_Manager::GetNumPages(const char* relName) const{
+    DataRelInfo r;
+    RID rid;
+    RC rc=GetRelFromCat(relName,r,rid);
+    if(rc)return rc;
+    return r.numPages;
+}
+
+RC SM_Manager::GetNumRecords(const char* relName) const{
+    DataRelInfo r;
+    RID rid;
+    RC rc=GetRelFromCat(relName,r,rid);
+    if(rc)return rc;
+    return r.numRecords;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

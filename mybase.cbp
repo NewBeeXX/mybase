@@ -36,7 +36,9 @@
 		<Unit filename="btree_node.cpp" />
 		<Unit filename="btree_node.h" />
 		<Unit filename="catalog.h" />
+		<Unit filename="data_attr_info.h" />
 		<Unit filename="dbcreate.cpp" />
+		<Unit filename="dbdestroy.cpp" />
 		<Unit filename="good_ix_test.cpp" />
 		<Unit filename="ix.h" />
 		<Unit filename="ix_error.cpp" />
@@ -50,6 +52,7 @@
 		<Unit filename="ix_test.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="mybase.h" />
+		<Unit filename="parser.h" />
 		<Unit filename="pf.h" />
 		<Unit filename="pf_buffermgr.cpp" />
 		<Unit filename="pf_buffermgr.h" />
@@ -76,6 +79,10 @@
 		<Unit filename="rm_record.cpp" />
 		<Unit filename="rm_rid.h" />
 		<Unit filename="rm_test.cpp" />
+		<Unit filename="sm.h" />
+		<Unit filename="sm_error.cpp" />
+		<Unit filename="sm_error.h" />
+		<Unit filename="sm_manager.cpp" />
 		<Unit filename="statistics.h" />
 		<Extensions>
 			<code_completion />
