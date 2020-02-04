@@ -32,6 +32,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="agg.h" />
 		<Unit filename="bitmap.cpp" />
 		<Unit filename="btree_node.cpp" />
 		<Unit filename="btree_node.h" />
@@ -39,7 +40,10 @@
 		<Unit filename="data_attr_info.h" />
 		<Unit filename="dbcreate.cpp" />
 		<Unit filename="dbdestroy.cpp" />
+		<Unit filename="file_scan.h" />
 		<Unit filename="good_ix_test.cpp" />
+		<Unit filename="index_scan.h" />
+		<Unit filename="iterator.h" />
 		<Unit filename="ix.h" />
 		<Unit filename="ix_error.cpp" />
 		<Unit filename="ix_error.h" />
@@ -51,7 +55,10 @@
 		<Unit filename="ix_manager.h" />
 		<Unit filename="ix_test.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="merge_join.h" />
 		<Unit filename="mybase.h" />
+		<Unit filename="nested_loop_index_join.h" />
+		<Unit filename="nested_loop_join.h" />
 		<Unit filename="parser.h" />
 		<Unit filename="pf.h" />
 		<Unit filename="pf_buffermgr.cpp" />
@@ -70,6 +77,10 @@
 		<Unit filename="predicate.cpp" />
 		<Unit filename="predicate.h" />
 		<Unit filename="printer.h" />
+		<Unit filename="projection.h" />
+		<Unit filename="ql.h" />
+		<Unit filename="ql_error.h" />
+		<Unit filename="ql_manager.cpp" />
 		<Unit filename="rm.h" />
 		<Unit filename="rm_error.cpp" />
 		<Unit filename="rm_error.h" />
@@ -83,7 +94,9 @@
 		<Unit filename="sm_error.cpp" />
 		<Unit filename="sm_error.h" />
 		<Unit filename="sm_manager.cpp" />
+		<Unit filename="sort.h" />
 		<Unit filename="statistics.h" />
+		<Unit filename="y.tab.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

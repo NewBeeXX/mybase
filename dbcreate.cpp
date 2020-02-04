@@ -72,7 +72,7 @@ int main(int argc,char* argv[]){
     ///下面把每个DataRelInfo当做一条记录 插进relfh
     RID rid;
     if((rc=relfh.InsertRec((char*)&relcat_rel,rid))<0||
-       (rc=relfn.InsertRec((char*)&attrcat_rel,rid))<0
+       (rc=relfh.InsertRec((char*)&attrcat_rel,rid))<0
        ) PrintErrorExit(rc);
 
     ///上面的把两个关系（一个关于关系的关系 一个关于属性的关系） 插进 relfh
@@ -114,7 +114,7 @@ int main(int argc,char* argv[]){
 
     strcpy(a.relName,"relcat");
     strcpy(a.attrName,"numRecods");
-    a.offset=offsetof(DataRelInfo,numRecods);
+    a.offset=offsetof(DataRelInfo,numRecords);
     a.attrType=INT;
     a.attrLength=sizeof(int);
     a.indexNo=-1;

@@ -10,7 +10,7 @@
 
 struct DataAttrInfo{
     DataAttrInfo(){
-        memset(relName,0,,MAXNAME+1);
+        memset(relName,0,MAXNAME+1);
         memset(attrName,0,MAXNAME+1);
         offset=-1;
         func=NO_F;
@@ -44,7 +44,7 @@ struct DataAttrInfo{
             indexNo=d.indexNo;
 //            func=d.func;
         }
-        retur *this;
+        return *this;
     }
 
     static unsigned int size(){

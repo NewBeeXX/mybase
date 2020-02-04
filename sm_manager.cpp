@@ -10,6 +10,7 @@
 #include"rm.h"
 #include"printer.h"
 #include"catalog.h"
+#include"unistd.h"
 
 using namespace std;
 
@@ -41,7 +42,7 @@ RC SM_Manager::OpenDb(const char* dbName) {
 
     RC rc;
     if((rc=rmm.OpenFile("attrcat",attrfh))||
-       (rc=rmm.OpenFile("relcat"),relfh)
+       (rc=rmm.OpenFile("relcat",relfh))
        )return rc;
     bDBOpen=true;
 
@@ -99,10 +100,10 @@ RC SM_Manager::CreateTable(const char* relName, int attrCount, AttrInfo* attribu
 }
 
 ///从关系表中找到名字为relname的第一个关系 返回datarelinfo 和 rid
-RC SM_Manager::GetRelFromCat(const char* relName, DataRelInfo& rel, RID& rid) const{
+RC SM_Manager::GetRelFromCat(const char* relName, DataRelInfo& rel, RID& rid) {
     RC invalid=IsValid();if(invalid)return invalid;
     if(relName==NULL)return SM_BADTABLE;
-    void* value=const_cast<char*>(relname);
+    void* value=const_cast<char*>(relName);
     RM_FileScan rfs;
     RC rc=rfs.OpenScan(relfh,STRING,MAXNAME+1,offsetof(DataRelInfo,relName),EQ_OP,value,NO_HINT);
     if(rc)return rc;
@@ -120,12 +121,12 @@ RC SM_Manager::GetRelFromCat(const char* relName, DataRelInfo& rel, RID& rid) co
 RC SM_Manager::GetAttrFromCat(const char* relName,
                               const char* attrName,
                               DataAttrInfo& attr,
-                              RID& rid) {
+                              RID& rid) const{
     RC invalid=IsValid();if(invalid)return invalid;
-    if(relName==NUMM||attrName==NULL)return SM_BADTABLE;
+    if(relName==NULL||attrName==NULL)return SM_BADTABLE;
     RC rc;
     RM_FileScan rfs;
-    RC_Record rec;
+    RM_Record rec;
     DataAttrInfo *data;
     if(rc=rfs.OpenScan(attrfh,STRING,MAXNAME+1,offsetof(DataAttrInfo,relName),EQ_OP,(void*)relName))
         return rc;
@@ -222,7 +223,7 @@ RC SM_Manager::CreateIndex(const char* relName, const char* attrName) {
         return rc;
     RM_Record rec;
     rec.Set((char*)data,DataAttrInfo::size(),rid);
-    if(rc=attrfh.UpdataRec(rec))return rc;
+    if(rc=attrfh.UpdateRec(rec))return rc;
     IX_IndexHandle ixh;
     ///打开 关系relname的编号为indexno的索引
     if(rc=ixm.OpenIndex(relName,data->indexNo,ixh))return rc;
@@ -294,7 +295,8 @@ RC SM_Manager::DropIndex(const char* relName, const char* attrName) {
     rec.GetRid(rid);
     rec.Set((char*)data,DataAttrInfo::size(),rid);
     ///写回attrcat
-    if(rc=attrfh.UpdateRec(rec))return rec;
+    if(rc=attrfh.UpdateRec(rec))return rc;
+
     return 0;
 
 }
@@ -315,7 +317,7 @@ RC SM_Manager::DropIndexFromAttrCatAlone(const char* relName, const char* attrNa
         rc=rfs.GetNextRec(rec);
         if(rc!=0&&rc!=RM_EOF)return rc;
         if(rc!=RM_EOF){
-            rec.GetData(data);
+            rec.GetData((char*&)data);
             if(strcmp(data->attrName,attrName)==0){
                 attrFound=true;
                 data->indexNo=-1;
@@ -333,7 +335,7 @@ RC SM_Manager::DropIndexFromAttrCatAlone(const char* relName, const char* attrNa
     rec.GetRid(rid);
     rec.Set((char*)data,DataAttrInfo::size(),rid);
     ///写回attrcat
-    if(rc=attrfh.UpdateRec(rec))return rec;
+    if(rc=attrfh.UpdateRec(rec))return rc;
     return 0;
 
 }
@@ -371,7 +373,7 @@ RC SM_Manager::ResetIndexFromAttrCatAlone(const char* relName, const char* attrN
     rec.GetRid(rid);
     rec.Set((char*)data,DataAttrInfo::size(),rid);
     ///写回attrcat
-    if(rc=attrfh.UpdateRec(rec))return rec;
+    if(rc=attrfh.UpdateRec(rec))return rc;
     return 0;
 }
 
@@ -420,7 +422,7 @@ RC SM_Manager::LoadRecord(const char* relName, int buflen, const char buf[]) {
     r.numPages=rfh.GetNumPages();
     RM_Record rec;
     rec.Set((char*)&r,DataRelInfo::size(),rid);
-    if(rc=relfh.UpdataRec(rec))return rc;
+    if(rc=relfh.UpdateRec(rec))return rc;
     if(rc=rmm.CloseFile(rfh))return rc;
 
     for(int i=0;i<attrCount;i++){
@@ -515,7 +517,7 @@ RC SM_Manager::Load(const char* relName, const char* fileName) {
     r.numPages=rfh.GetNumPages();
     RM_Record rec;
     rec.Set((char*)&r,DataRelInfo::size(),rid);
-    if(rc=relfh.UpdataRec(rec))return rc;
+    if(rc=relfh.UpdateRec(rec))return rc;
     if(rc=rmm.CloseFile(rfh))return rc;
     for(int i=0;i<attrCount;i++)if(attributes[i].indexNo!=-1){
         if(rc=ixm.CloseIndex(indexes[i]))return rc;
@@ -543,7 +545,7 @@ RC SM_Manager::Print(const char* relName) {
         if(rc=rmm.OpenFile(relName,rfh))return rc;
         prfh=&rfh;
     }
-    if(rc=GetFromTable(relName,attrCount,attributes))retunr rc;
+    if(rc=GetFromTable(relName,attrCount,attributes))return rc;
 
     Printer p(attributes,attrCount);
     p.PrintHeader(cout);
@@ -585,7 +587,7 @@ RC SM_Manager::Get(const string& paramName, string& value) const{
     RC invalid=IsValid();if(invalid)return invalid;
     auto it=params.find(paramName);
     if(it==params.end())return SM_BADPARAM;
-    val=it->second;
+    value=it->second;
     return 0;
 }
 
@@ -671,6 +673,7 @@ RC SM_Manager::GetFromTable(const char* relName, int& attrCount, DataAttrInfo*& 
     if(relName==NULL)return SM_NOSUCHTABLE;
     void* value=const_cast<char*>(relName);
     RM_FileScan rfs;
+    RC rc;
     ///先找一下这个关系是否存在
     if(rc=rfs.OpenScan(relfh,STRING,MAXNAME+1,offsetof(DataRelInfo,relName),EQ_OP,value,NO_HINT))
         return rc;
@@ -679,8 +682,8 @@ RC SM_Manager::GetFromTable(const char* relName, int& attrCount, DataAttrInfo*& 
     if(rc==RM_EOF)return SM_NOSUCHTABLE;
     DataRelInfo* prel;
     rec.GetData((char*&)prel);
-    if(rc=rfs.CloseScan())returnr rc;
-    attrCount=pel->attrCount;
+    if(rc=rfs.CloseScan())return rc;
+    attrCount=prel->attrCount;
     attributes=new DataAttrInfo[attrCount];
     RM_FileScan afs;
     if(rc=afs.OpenScan(attrfh,STRING,MAXNAME+1,offsetof(DataAttrInfo,relName),EQ_OP,value,NO_HINT))
@@ -709,7 +712,7 @@ bool SM_Manager::IsAttrIndexed(const char* relname, const char* attrName) const{
 }
 
 ///这个只是测试能不能get到这个relName关系，判断存不存在?
-RC SM_Manager::SemCheck(const char* relName) const{
+RC SM_Manager::SemCheck(const char* relName) {
     RC invalid=IsValid();if(invalid)return invalid;
     DataRelInfo rel;
     RID rid;
@@ -767,7 +770,7 @@ RC SM_Manager::FindRelForAttr(RelAttr& ra, int nRelations,
 
 ///检查一下一个条件是否合法
 ///比如符号两边的值是否存在 是否是同类型的可比的值
-RC SM_Manager::SemCheck(const Condition& cond) {
+RC SM_Manager::SemCheck(const Condition& cond) const{
     if(cond.op<NO_OP||cond.op>GE_OP) return SM_BADOP;
     if(cond.lhsAttr.relName==NULL||cond.lhsAttr.attrName==NULL)
         return SM_NOSUCHENTRY;
@@ -778,7 +781,7 @@ RC SM_Manager::SemCheck(const Condition& cond) {
         RID rid;
         RC rc=GetAttrFromCat(cond.lhsAttr.relName,cond.lhsAttr.attrName,a,rid);
         if(rc)return SM_NOSUCHENTRY;
-        RC rc=GetAttrFromCat(cond.rhsAttr.relName,cond.rhsAttr.attrName,b,rid);
+        rc=GetAttrFromCat(cond.rhsAttr.relName,cond.rhsAttr.attrName,b,rid);
         if(rc)return SM_NOSUCHENTRY;
 
         if(b.attrType!=a.attrType)return SM_TYPEMISMATCH;
@@ -798,7 +801,7 @@ RC SM_Manager::SemCheck(const Condition& cond) {
 
 
 
-RC SM_Manager::GetNumPages(const char* relName) const{
+RC SM_Manager::GetNumPages(const char* relName) {
     DataRelInfo r;
     RID rid;
     RC rc=GetRelFromCat(relName,r,rid);
@@ -806,7 +809,7 @@ RC SM_Manager::GetNumPages(const char* relName) const{
     return r.numPages;
 }
 
-RC SM_Manager::GetNumRecords(const char* relName) const{
+RC SM_Manager::GetNumRecords(const char* relName) {
     DataRelInfo r;
     RID rid;
     RC rc=GetRelFromCat(relName,r,rid);

@@ -315,7 +315,7 @@ RC RM_FileHandle::DeleteRec(const RID& rid) {
 
 }
 
-RC RM_FileHandle::UpdataRec(const RM_Record& rec) {
+RC RM_FileHandle::UpdateRec(const RM_Record& rec) {
     RC invalid = IsValid();
     if(invalid) return invalid;
     RID rid;

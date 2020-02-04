@@ -30,7 +30,7 @@ public:
 private:
     void Init(const DataAttrInfo *attributes_,const int attrCount_);
 private:
-    DataAttrInto *attributes;
+    DataAttrInfo *attributes;
     int attrCount;
     char **psHeader;
     int *spaces;

@@ -12,6 +12,11 @@
 
 #define YY_SKIP_YYWRAP 1
 #define yywrap() 1
+
+#ifndef offsetof
+#define offsetof(type,field) ((size_t) &( ((type*)0)->field )  )
+#endif // offsetof
+
 void yyerror(const char *);
 
 

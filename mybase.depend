@@ -7,7 +7,7 @@
 1579192782 /home/qyw/mybase/mybase/pf.h
 	"mybase.h"
 
-1579192782 /home/qyw/mybase/mybase/mybase.h
+1580740477 /home/qyw/mybase/mybase/mybase.h
 	<iostream>
 	<cmath>
 	<cassert>
@@ -80,7 +80,7 @@
 	<cmath>
 	<cstring>
 
-1579422106 /home/qyw/mybase/mybase/rm.h
+1580743926 /home/qyw/mybase/mybase/rm.h
 	"mybase.h"
 	"rm_error.h"
 	"rm_rid.h"
@@ -110,7 +110,7 @@
 	<iostream>
 	"predicate.h"
 
-1579422337 source:/home/qyw/mybase/mybase/rm_filehandle.cpp
+1580743932 source:/home/qyw/mybase/mybase/rm_filehandle.cpp
 	<cerrno>
 	<cstring>
 	<cmath>
@@ -233,4 +233,77 @@
 	"ix.h"
 
 1580385422 source:/home/qyw/mybase/mybase/good_ix_test.cpp
+
+1580740496 source:/home/qyw/mybase/mybase/dbcreate.cpp
+	<iostream>
+	<cstdio>
+	<string>
+	<sstream>
+	<unistd.h>
+	"rm.h"
+	"sm.h"
+	"mybase.h"
+	"catalog.h"
+
+1580744243 /home/qyw/mybase/mybase/sm.h
+	"sm_error.h"
+	<cstdlib>
+	<cstring>
+	"mybase.h"
+	"parser.h"
+	"rm.h"
+	"ix.h"
+	"catalog.h"
+	<string>
+	<map>
+
+1580621576 /home/qyw/mybase/mybase/sm_error.h
+	"mybase.h"
+
+1580739754 /home/qyw/mybase/mybase/parser.h
+	<iostream>
+	"mybase.h"
+	"pf.h"
+
+1580446870 /home/qyw/mybase/mybase/catalog.h
+	"printer.h"
+	"parser.h"
+
+1580739888 /home/qyw/mybase/mybase/printer.h
+	<iostream>
+	<cstring>
+	"mybase.h"
+	"catalog.h"
+	"data_attr_info.h"
+	"iterator.h"
+
+1580739763 /home/qyw/mybase/mybase/data_attr_info.h
+	<iostream>
+	<cstring>
+	"mybase.h"
+	"catalog.h"
+
+1580739880 /home/qyw/mybase/mybase/iterator.h
+	"mybase.h"
+	"data_attr_info.h"
+	"rm_rid.h"
+	<sstream>
+	"predicate.h"
+
+1580465423 source:/home/qyw/mybase/mybase/dbdestroy.cpp
+	<iostream>
+	<sstream>
+	<cstdio>
+	<cstring>
+	<unistd.h>
+	"rm.h"
+	"sm.h"
+	"mybase.h"
+
+1580482138 source:/home/qyw/mybase/mybase/sm_error.cpp
+	"sm_error.h"
+	<cerrno>
+	<cstdio>
+	<iostream>
+	"sm.h"
 

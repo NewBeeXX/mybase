@@ -52,10 +52,10 @@ public:
                       DataAttrInfo& attr,RID& rid
                       )const;
 
-    RC GetNumPages(const char* relName)const;
-    RC GetNumRecords(const char* relName)const;
+    RC GetNumPages(const char* relName);
+    RC GetNumRecords(const char* relName);
 
-    RC SemCheck(const char* relName)const;
+    RC SemCheck(const char* relName);
     RC SemCheck(const RelAttr& ra)const;
     RC SemCheck(const AggRelAttr& ra)const;
     RC SemCheck(const Condition& cond)const;

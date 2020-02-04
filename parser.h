@@ -9,7 +9,7 @@
 
 struct AttrInfo{
     char *attrName;
-    AttrType AttrInfo;
+    AttrType attrType;
     int attrLength;
 };
 struct RelAttr{

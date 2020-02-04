@@ -126,7 +126,7 @@ public :
     RC GetRec(const RID& rid,RM_Record& rec)const;
     RC InsertRec(const char* pData,RID &rid);
     RC DeleteRec(const RID& rid);
-    RC UpdataRec(const RM_Record& rec);
+    RC UpdateRec(const RM_Record& rec);
 
     ///分页写回disk
     RC ForcePages(PageNum pageNum=ALL_PAGES);
