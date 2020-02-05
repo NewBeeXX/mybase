@@ -14,7 +14,7 @@
 
 class QL_Manager{
 public:
-    QL_Manager(SM_Manager &smm,IX_Manager& ism,RM_Manager& rmm);
+    QL_Manager(SM_Manager &smm,IX_Manager& ixm,RM_Manager& rmm);
     ~QL_Manager();
     RC Select(int nSelAttrs, ///被选中的属性
               const AggRelAttr selAttrs[],

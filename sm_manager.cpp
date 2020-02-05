@@ -358,7 +358,7 @@ RC SM_Manager::ResetIndexFromAttrCatAlone(const char* relName, const char* attrN
             rec.GetData((char*&)data);
             if(strcmp(data->attrName,attrName)==0){
                 attrFound=true;
-                data->indexNo=-1;
+                data->indexNo=data->offset;
                 break;
             }
         }
@@ -719,6 +719,7 @@ RC SM_Manager::SemCheck(const char* relName) {
     return GetRelFromCat(relName,rel,rid);
 }
 
+///这个关系有没有这个属性
 RC SM_Manager::SemCheck(const RelAttr& ra) const{
     RC invalid=IsValid();if(invalid)return invalid;
     DataAttrInfo a;
