@@ -10,6 +10,14 @@
 
 #define MAXPRINTSTRING (2*MAXNAME+5)
 
+#ifndef mmin
+#define mmin(a,b) ((a)<(b)?(a):(b))
+#endif // mmin
+
+#ifndef mmax
+#define mmax(a,b) ((a)>(b)?(a):(b))
+#endif // mmin
+
 void Spaces(int maxLength,int printedSoFar);
 class DataAttrInfo;
 class Tuple;
@@ -37,13 +45,7 @@ private:
     int iCount;
 };
 
-#ifndef mmin
-#define minn(a,b) ((a)<(b)?(a):(b))
-#endif // mmin
 
-#ifndef mmax
-#define mmax(a,b) ((a)>(b)?(a):(b))
-#endif // mmin
 
 
 

@@ -18,13 +18,14 @@ public:
               const Condition outFilters[]=NULL
               );
     virtual ~FileScan();
+    virtual RC Open();
     virtual RC GetNext(Tuple& t);
     virtual RC Close();
     virtual string Explain();
 
     RC IsValid();
-    virtual RC Eof()consnt {return RM_EOF;}
-    virtual int GetNumPages()const{retun psmm->GetNumPages(relName);}
+    virtual RC Eof()const {return RM_EOF;}
+    virtual int GetNumPages()const{return psmm->GetNumPages(relName);}
     virtual int GetNumSlotsPerPage()const{return rfs.GetNumSlotsPerPage();}
     virtual int GetNumRecords()const{return psmm->GetNumRecords(relName);}
     virtual RC GotoPage(PageNum p){return rfs.GotoPage(p);}

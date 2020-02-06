@@ -56,10 +56,10 @@ public:
     }
     string Explain(){
         stringstream t;
-        d<<indent<<explain.str();
+        t<<indent<<explain.str();
         lhsIt->SetIndent(indent+"-----");
         t<<lhsIt->Explain();
-        return r.str();
+        return t.str();
     }
     virtual ~Sort(){}
     virtual RC Open(){

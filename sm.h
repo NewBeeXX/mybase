@@ -46,14 +46,14 @@ public:
     RC IsValid()const;
 
     RC GetFromTable(const char* relName,int &attrCount,DataAttrInfo*& attributes);
-    RC GetRelFromCat(const char* relName,DataRelInfo& rel,RID& rid);
+    RC GetRelFromCat(const char* relName,DataRelInfo& rel,RID& rid)const;
 
     RC GetAttrFromCat(const char* relName,const char* attrName,
                       DataAttrInfo& attr,RID& rid
                       )const;
 
-    RC GetNumPages(const char* relName);
-    RC GetNumRecords(const char* relName);
+    RC GetNumPages(const char* relName) const;
+    RC GetNumRecords(const char* relName) const;
 
     RC SemCheck(const char* relName);
     RC SemCheck(const RelAttr& ra)const;

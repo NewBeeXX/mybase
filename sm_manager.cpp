@@ -100,7 +100,7 @@ RC SM_Manager::CreateTable(const char* relName, int attrCount, AttrInfo* attribu
 }
 
 ///从关系表中找到名字为relname的第一个关系 返回datarelinfo 和 rid
-RC SM_Manager::GetRelFromCat(const char* relName, DataRelInfo& rel, RID& rid) {
+RC SM_Manager::GetRelFromCat(const char* relName, DataRelInfo& rel, RID& rid) const{
     RC invalid=IsValid();if(invalid)return invalid;
     if(relName==NULL)return SM_BADTABLE;
     void* value=const_cast<char*>(relName);
@@ -743,6 +743,7 @@ RC SM_Manager::SemCheck(const AggRelAttr& ra) const{
 
 ///这个函数是在一些关系中查找一个属性 如果这个属性只出现在一个关系 就是正常的
 ///如果哪个关系都找不到这个属性 或者 出现了 多次 就是不正常的
+///并且这个函数如果找到了唯一的那个关系 还会给传入的ra的标上来
 RC SM_Manager::FindRelForAttr(RelAttr& ra, int nRelations,
                               const char* const possibleRelations[])const {
     RC invalid=IsValid();if(invalid)return invalid;
@@ -802,7 +803,7 @@ RC SM_Manager::SemCheck(const Condition& cond) const{
 
 
 
-RC SM_Manager::GetNumPages(const char* relName) {
+RC SM_Manager::GetNumPages(const char* relName) const{
     DataRelInfo r;
     RID rid;
     RC rc=GetRelFromCat(relName,r,rid);
@@ -810,7 +811,7 @@ RC SM_Manager::GetNumPages(const char* relName) {
     return r.numPages;
 }
 
-RC SM_Manager::GetNumRecords(const char* relName) {
+RC SM_Manager::GetNumRecords(const char* relName)const {
     DataRelInfo r;
     RID rid;
     RC rc=GetRelFromCat(relName,r,rid);

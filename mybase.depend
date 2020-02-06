@@ -245,7 +245,7 @@
 	"mybase.h"
 	"catalog.h"
 
-1580744243 /home/qyw/mybase/mybase/sm.h
+1580973039 /home/qyw/mybase/mybase/sm.h
 	"sm_error.h"
 	<cstdlib>
 	<cstring>
@@ -260,7 +260,7 @@
 1580621576 /home/qyw/mybase/mybase/sm_error.h
 	"mybase.h"
 
-1580739754 /home/qyw/mybase/mybase/parser.h
+1580916646 /home/qyw/mybase/mybase/parser.h
 	<iostream>
 	"mybase.h"
 	"pf.h"
@@ -269,7 +269,7 @@
 	"printer.h"
 	"parser.h"
 
-1580739888 /home/qyw/mybase/mybase/printer.h
+1580975045 /home/qyw/mybase/mybase/printer.h
 	<iostream>
 	<cstring>
 	"mybase.h"
@@ -277,7 +277,7 @@
 	"data_attr_info.h"
 	"iterator.h"
 
-1580739763 /home/qyw/mybase/mybase/data_attr_info.h
+1580919022 /home/qyw/mybase/mybase/data_attr_info.h
 	<iostream>
 	<cstring>
 	"mybase.h"
@@ -306,4 +306,143 @@
 	<cstdio>
 	<iostream>
 	"sm.h"
+
+1580972943 source:/home/qyw/mybase/mybase/ql_manager.cpp
+	<cstdio>
+	<iostream>
+	<algorithm>
+	<sys/time.h>
+	<sys/types.h>
+	<cassert>
+	<unistd.h>
+	"mybase.h"
+	"ql.h"
+	"sm.h"
+	"ix.h"
+	"rm.h"
+	"iterator.h"
+	"index_scan.h"
+	"file_scan.h"
+	"nested_loop_join.h"
+	"nested_block_join.h"
+	"nested_loop_index_join.h"
+	"merge_join.h"
+	"sort.h"
+	"agg.h"
+	"parser.h"
+	"projection.h"
+	<map>
+	<vector>
+	<functional>
+
+1580873942 /home/qyw/mybase/mybase/ql.h
+	<cstdlib>
+	<cstring>
+	"mybase.h"
+	"parser.h"
+	"ql_error.h"
+	"rm.h"
+	"ix.h"
+	"sm.h"
+	"iterator.h"
+
+1580960668 /home/qyw/mybase/mybase/ql_error.h
+	"mybase.h"
+
+1580974982 /home/qyw/mybase/mybase/index_scan.h
+	"mybase.h"
+	"iterator.h"
+	"ix.h"
+	"sm.h"
+	"rm.h"
+
+1580972901 /home/qyw/mybase/mybase/file_scan.h
+	"mybase.h"
+	"iterator.h"
+	"rm.h"
+	"sm.h"
+
+1580831633 /home/qyw/mybase/mybase/nested_loop_join.h
+	"mybase.h"
+	"iterator.h"
+	"ix.h"
+	"sm.h"
+	"rm.h"
+	"ql_error.h"
+
+1580972033 /home/qyw/mybase/mybase/nested_block_join.h
+	"nested_loop_join.h"
+	"file_scan.h"
+	<vector>
+	<cmath>
+
+1580960698 /home/qyw/mybase/mybase/nested_loop_index_join.h
+	"nested_loop_join.h"
+	"index_scan.h"
+
+1580832506 /home/qyw/mybase/mybase/merge_join.h
+	"nested_loop_join.h"
+	"mybase.h"
+	"iterator.h"
+	"rm.h"
+	<vector>
+
+1580960720 /home/qyw/mybase/mybase/sort.h
+	"mybase.h"
+	"iterator.h"
+	"sm.h"
+	"ql_error.h"
+	<set>
+	"predicate.h"
+
+1580960843 /home/qyw/mybase/mybase/agg.h
+	"mybase.h"
+	"iterator.h"
+	"sm.h"
+	"ql_error.h"
+	"predicate.h"
+	<list>
+
+1580793890 /home/qyw/mybase/mybase/projection.h
+	"iterator.h"
+	"mybase.h"
+	"parser.h"
+	"rm.h"
+
+1580973018 source:/home/qyw/mybase/mybase/sm_manager.cpp
+	<cstdio>
+	<iostream>
+	<fstream>
+	<sstream>
+	<set>
+	<string>
+	"mybase.h"
+	"sm.h"
+	"ix.h"
+	"rm.h"
+	"printer.h"
+	"catalog.h"
+	"unistd.h"
+
+1580974351 source:/home/qyw/mybase/mybase/file_scan.cpp
+	"file_scan.h"
+	"rm.h"
+	"sm.h"
+	"predicate.h"
+
+1580974383 source:/home/qyw/mybase/mybase/index_scan.cpp
+	"index_scan.h"
+	"rm.h"
+	"sm.h"
+
+1580974417 source:/home/qyw/mybase/mybase/merge_join.cpp
+	"merge_join.h"
+
+1580974489 source:/home/qyw/mybase/mybase/nested_loop_join.cpp
+	"nested_loop_join.h"
+	"ql_error.h"
+	"sm.h"
+	<algorithm>
+	"predicate.h"
+	"parser.h"
 

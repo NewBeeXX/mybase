@@ -46,7 +46,7 @@ private:
     string attrName;
     RM_FileHandle rmh;
     IX_IndexHandle ixh;
-    int nOfilters;
+    int nOFilters;
     Condition* oFilters;
     CompOp c;
 };

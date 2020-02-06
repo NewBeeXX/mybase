@@ -21,7 +21,7 @@ public:
         explain << "NestedLoopIndexJoin\n";
         if(nOFilters>0){
             explain << "   nJoinConds = " << nOutFilters << "\n";
-            for(int i=-;i<nOutFilters;i++){
+            for(int i=0;i<nOutFilters;i++){
                 explain << "   joinConds[" << i << "]:" << outFilters[i] << "\n";
             }
         }

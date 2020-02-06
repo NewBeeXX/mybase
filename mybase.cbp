@@ -40,8 +40,10 @@
 		<Unit filename="data_attr_info.h" />
 		<Unit filename="dbcreate.cpp" />
 		<Unit filename="dbdestroy.cpp" />
+		<Unit filename="file_scan.cpp" />
 		<Unit filename="file_scan.h" />
 		<Unit filename="good_ix_test.cpp" />
+		<Unit filename="index_scan.cpp" />
 		<Unit filename="index_scan.h" />
 		<Unit filename="iterator.h" />
 		<Unit filename="ix.h" />
@@ -55,9 +57,12 @@
 		<Unit filename="ix_manager.h" />
 		<Unit filename="ix_test.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="merge_join.cpp" />
 		<Unit filename="merge_join.h" />
 		<Unit filename="mybase.h" />
+		<Unit filename="nested_block_join.h" />
 		<Unit filename="nested_loop_index_join.h" />
+		<Unit filename="nested_loop_join.cpp" />
 		<Unit filename="nested_loop_join.h" />
 		<Unit filename="parser.h" />
 		<Unit filename="pf.h" />
@@ -76,7 +81,10 @@
 		<Unit filename="pf_test3.cpp" />
 		<Unit filename="predicate.cpp" />
 		<Unit filename="predicate.h" />
+		<Unit filename="printer.cpp" />
 		<Unit filename="printer.h" />
+		<Unit filename="projection" />
+		<Unit filename="projection.cpp" />
 		<Unit filename="projection.h" />
 		<Unit filename="ql.h" />
 		<Unit filename="ql_error.h" />

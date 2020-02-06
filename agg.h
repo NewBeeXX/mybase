@@ -37,23 +37,23 @@ public:
         attrCount=nSelAttrs;
         attrs=new DataAttrInfo[attrCount];
         lattrs=new DataAttrInfo[attrCount];
-        aggs=new AggFun[attrCount]
+        aggs=new AggFun[attrCount];
         attrCmps=new TupleCmp[attrCount];
 
-        DataAttrInfo* itattrs=lhsIt->GetAttrs();
+        DataAttrInfo* itattrs=lhsIt->GetAttr();
 
         int offsetsofar=0;
         for(int j=0;j<attrCount;j++){
             for(int i=0;i<lhsIt->GetAttrCount();i++){
                 if(strcmp(selAttrs[j].relName,itattrs[i].relName)==0&&
-                   strcmp(selAttrs[j].attrName,itattrs[i].attrName==0)
+                   strcmp(selAttrs[j].attrName,itattrs[i].attrName)==0
                    ){
                     lattrs[j]=itattrs[i];
                     attrs[j]=itattrs[i];
                     attrs[j].func=selAttrs[j].func;
                     if(attrs[j].func==COUNT_F)attrs[j].attrType=INT;
                     attrs[j].offset=offsetsofar;
-                    offsetsofat+=itattrs[i].attrLength;
+                    offsetsofar+=itattrs[i].attrLength;
                     attrCmps[j]=TupleCmp(attrs[j].attrType,attrs[j].attrLength,attrs[j].offset,GT_OP);
                     break;
 
